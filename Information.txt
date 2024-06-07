@@ -1,0 +1,4 @@
+This is a Todo Management Appllciaiton
+
+This project demonstrates the use of ReactJS as Frontend and SpringBoot as Backend.
+

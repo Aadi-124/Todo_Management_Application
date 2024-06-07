@@ -1,0 +1,46 @@
+.Regcontainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: space-around;
+    align-items: center;
+    height: 65vh;
+    margin: auto;
+    width: 50%;
+}
+/* 
+.Regcontainer>div{
+    border:3px solid red;
+} */
+
+#Regheading{
+    width: min-content; 
+    margin: 0px auto;
+    margin-top: 100px;
+}
+
+#Regsubmit{
+    width: min-content; 
+    margin: 30px auto;
+    margin-bottom: 150px;
+}
+
+
+.subcontainer{
+    display: inline;
+}
+
+.txt_fields{
+    width: 40vh;
+}
+
+.heading{
+    font-family: "Roboto";
+    margin: auto;
+    width: 100%;
+}
+
+#regbtn{
+    padding: 10px 40px;
+    font-size: 15px;
+}

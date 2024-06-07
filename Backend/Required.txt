@@ -1,0 +1,9 @@
+{
+  "name":"Aaditya",
+  "password":"123",
+  "role":"ADMIN",
+  "email":"aadityathakare124@gmail.com",
+  "phone":"8275807713",
+  "dob":"12-04-2004",
+  "profilePic":"My Picture"
+}
