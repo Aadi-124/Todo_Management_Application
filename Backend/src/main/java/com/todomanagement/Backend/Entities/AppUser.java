@@ -16,12 +16,21 @@ public class AppUser{
     private String phone;
     private String dob;
     private String profilePic;
+    private String otp;
+    private String accountcreationdate;
+    private Integer nooftodos;
 
     
+    public Integer getNooftodos() {
+        return nooftodos;
+    }
+    public void setNooftodos(Integer nooftodos) {
+        this.nooftodos = nooftodos;
+    }
     public AppUser(){
     }
     public AppUser(Integer id, String name, String password, String role, String email, String phone, String dob,
-            String profilePic) {
+            String profilePic, String otp, String accountcreationdate, Integer nooftodos) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -30,6 +39,9 @@ public class AppUser{
         this.phone = phone;
         this.dob = dob;
         this.profilePic = profilePic;
+        this.otp = otp;
+        this.accountcreationdate = accountcreationdate;
+        this.nooftodos = nooftodos;
     }
     public Integer getId() {
         return id;
@@ -79,6 +91,16 @@ public class AppUser{
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
-
-
+    public String getOtp() {
+        return otp;
+    }
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+    public String getAccountcreationdate() {
+        return accountcreationdate;
+    }
+    public void setAccountcreationdate(String accountcreationdate) {
+        this.accountcreationdate = accountcreationdate;
+    }
 }

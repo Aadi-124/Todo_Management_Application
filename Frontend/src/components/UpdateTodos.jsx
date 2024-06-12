@@ -7,14 +7,20 @@ import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
 import { DatePicker } from "@mui/x-date-pickers";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { useLocation } from "react-router-dom";
+import './Todos.css';
 
 export default function UpdateTodos(){
 
+
+    const location = useLocation();
+    const data = location.state;
     // const [value, setV] = useState(dayjs(''));
     const navigate = useNavigate();
     const {id,index} = useParams();
@@ -31,27 +37,23 @@ export default function UpdateTodos(){
     } = useForm();
 
     useEffect(() => {
-            setValue("tododescription",description);
+            setValue("tododescription",data.description);
     }, [description]);
-
-    useEffect(() => {
-            setValue("tododate",date);
-    }, [date]);
 
 
 
 
     
-    useEffect(()=>{
-        retrieveTodo(id)
-        .then((response) => 
-        {
-            setDesription(response.data.description)
-            setDate(response.data.date)
-        })
-        .catch((error) => {})
-        .finally(() => {})
-    },[])
+    // useEffect(()=>{
+    //     retrieveTodo(id)
+    //     .then((response) => 
+    //     {
+    //         setDesription(response.data.description)
+    //         setDate(response.data.date)
+    //     })
+    //     .catch((error) => {})
+    //     .finally(() => {})
+    // },[])
     
 
    
@@ -68,24 +70,37 @@ export default function UpdateTodos(){
         //     description:getValues("tododescription"),
         //     date:getValues("tododate"),
         //     isDone:false});
-            const todo = { id:id,
+            const todo = { 
+                id:data.id,
                 description:getValues("tododescription"),
-                date:getValues("tododate"),
+                targetedDate:getValues("targeteddate"),
                 isDone:false}
-                updateTodoAPI(id,todo)
-                .then((response)=>{})
-                .catch((error)=>{})
+                updateTodoAPI(todo)
+                .then((response)=>{
+                    Swal.fire({
+                        title: 'Updated!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((response)=>{
+                        if(response.isConfirmed){
+                            if(data.showalltodo){navigate("/showalltodo");} else {navigate("/table")}
+                            
+                        }
+                    })
+                })
+                .catch((error)=>{
+                    Swal.fire({
+                        title: 'Not Updated!',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    }).then((response)=>{
+                        if(response.isConfirmed){
+                            navigate("/table");
+                        }
+                    })
+                })
                 .finally(()=>{})
                  
-                Swal.fire({
-                    title: 'Updated!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((response)=>{
-                    if(response.isConfirmed){
-                        navigate("/table");
-                    }
-                })
                 // navigate("/table")
             
     }
@@ -103,39 +118,33 @@ export default function UpdateTodos(){
     return(
         <>
         <center>
-
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h1 className="heading" style={{"marginTop":"500px"}}>Update Todo</h1>
+            <br />
+            <br />
+            <br /><br />
+            <br />
+            <br />
             <form action="" onSubmit={handleSubmit(onSubmit)}>
-                {/* <input type="text" {...register("todojname",{required:{value:true,message:"This is required!"}})} /> */}
-                <div style={{marginTop:"4cm"}}>
-            <br />
-           <span style={{fontFamily:"calibri",fontSize:"20px",margin:"30px"}}>Description</span>
-           <br />
-            <TextField id="outlined-basic" onChange={handleOnChange}  {...register("tododescription")} variant="outlined" />
-            <br />
-            <br />
-            <br />
-            <br />
-            {/* <TextField id="outlined-basic"  {...register("tododate")} type="date" variant="outlined" /> */}
+                <div className="mainContainer">
+            <div className="inpContainer">
 
-
-            
-           <span style={{fontFamily:"calibri",fontSize:"20px",margin:"30px"}}>Date</span>
-           <br /> 
-           <TextField id="outlined-basic" onChange={(newValue) => setValue(newValue)}  {...register("tododate")} variant="outlined" type="date" />
-
-
-
-
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker {...register("tododate")} />
-            </LocalizationProvider>  */}
-
+            <TextField id="outlined-basic" onChange={handleOnChange}  {...register("tododescription")} variant="outlined" label="Description"required/>
+               <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateField']}>
+                  <DateField id='date' style={{"width":"100%"}} className='txt_fields' format='DD/MM/YYYY' {...register("targeteddate")} label="Targeted Date" required/>  
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+            <div className="submitContainer">
+                <Button variant="contained" onClick={cancel} color="error">Cancel</Button>
+                <Button variant="contained" type="submit" color="success">Update</Button>
+            </div>
                 </div>
-                <br />
-                <br />
-                <br />
-                <Button variant="contained" onClick={cancel} style={{fontWeight:"bolder",margin:"30px"}} color="error">Cancel</Button>
-                <Button variant="contained" type="submit" style={{fontWeight:"bolder",margin:"30px"}} color="success">Update</Button>
             </form>
         </center>
         </>

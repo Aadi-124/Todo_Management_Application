@@ -20,12 +20,25 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { OTPAPI } from '../API/APIService';
+import Swal from 'sweetalert2';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+// import './dayjs/locale/{localeUsed}';
+import LoadingButton from '@mui/lab/LoadingButton';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import SaveIcon from '@mui/icons-material/Save';
+import SendIcon from '@mui/icons-material/Send';
+import './Todos.css';
+
+
 
 export default function Register() {
 
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [Text,setText] = useState('Register');
   const [pass, setPass] = useState(true);
   const [name, setName] = useState(true);
   const [phone, setPhone] = useState(true);
@@ -52,24 +65,91 @@ export default function Register() {
 
   const onSubmit = () => {
 
-    console.log("ENTERED!");
     if (getValues("name").length <= 20 && getValues("name").length >= 3) setName(true); else {setName(false); return false;}
     if (getValues("phone").length == 10) setPhone(true); else {setPhone(false);  return false;}
     if (getValues("pass") == getValues("cpass")) setPass(true); else {setPass(false);  return false;}
-    let date = getValues("dob").split(".");
-    if (new Date().getFullYear() - date[2] >= 18) setDob(true); else {setDob(false);  return false;}
-    console.log(name);
-    console.log(pass);
-    console.log(dob);
-    console.log(phone);
+    let date = getValues("dob").split("/");
+   if (new Date().getFullYear() - date[2] >= 18) setDob(true); else {setDob(false);  return false;}
+    setLoading(true);
+    setText('Registering...');
 
-    const ROLE = getValues("role");
     if(name && phone && pass && dob){
-        navigate(`/otp/${ROLE}`);
+
+
+      OTPAPI({email:getValues("email")})
+      .then((response)=>{
+        console.log(response.data)
+        if(response.data){
+          const user = {
+            name:getValues("name"),
+            password:getValues("pass"),
+            role:getValues("role"),
+            email:getValues("email"),
+            phone:getValues("phone"),
+            dob:getValues("dob"),
+            profilepic:getValues("profilepic"),
+            otp:null,
+            purpose:"Registration"
+          }
+          navigate(`/registration-otp`,{state:user});
+        } else {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-right',
+            iconColor: 'white',
+            customClass: {
+              popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          });
+  
+          (async () => {
+            await Toast.fire({
+              icon: 'error',
+              title: 'Network Error',
+              text:'Plaease check your Internet Connection!'
+            })
+          })()
+          setLoading(false);
+          setText(Register);
+        }
+      })
+      .catch((error)=>{
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-right',
+          iconColor: 'white',
+          customClass: {
+            popup: 'colored-toast',
+          },
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+        });
+
+        (async () => {
+          await Toast.fire({
+            icon: 'error',
+            title: 'Network Error',
+            text:'Plaease check your Internet Connection!'
+          })
+        })()
+
+
+        setLoading(false);
+        setText('Register');
+      });
     }
 
   }
 
+  const run = () =>{
+    console.log(getValues("dob"))
+  }
+
+  const [loading, setLoading] = React.useState(false);
 
   return (
     <>
@@ -177,9 +257,10 @@ export default function Register() {
 
             {/* DOB */}
             <div>
-              <LocalizationProvider dateAdapter={AdapterDayjs}  adapterLocale="de">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DateField']}>
-                  <DateField className='txt_fields' {...register("dob")} id='date' label="Date Of Birth" required/>
+                  <DateField id='date' className='txt_fields' format='DD/MM/YYYY' {...register("dob")} label="Date Of Birth" required/>
+                  {/* <DateField className='txt_fields' format='DD/MM/YYYY' id='date' label="Date Of Birth" required/> */}
                 </DemoContainer>
               </LocalizationProvider>
               {!dob && <label htmlFor="date" style={{ "color": "red", "display": "block", "fontFamily": "Roboto" }}>*User Should be Above 18 </label>}
@@ -198,7 +279,19 @@ export default function Register() {
 
           <div id='Regsubmit'>
             {/* SUBMIT BUTTON! */}
-            <Button variant="contained" id='regbtn' type="submit">Register</Button>
+                    <LoadingButton
+                  color="primary"
+                  type='submit'
+                  loading={loading}
+                  loadingPosition="start"
+                  variant="contained"
+                  id='regbtn'
+                  startIcon={<HowToRegIcon/>}
+                >
+                  <span>{Text}</span>
+                </LoadingButton>
+   
+            {/* <Button variant="contained" id='regbtn' type="submit">Register</Button> */}
            
           </div>
 
@@ -212,4 +305,6 @@ export default function Register() {
 
     </>
   );
+
+
 }

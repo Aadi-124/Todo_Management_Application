@@ -11,31 +11,64 @@ public class Todos
     @Transient
     public static final String SEQUENCE_NAME = "TODOS_SEQUENCE";
     @Id
-    private String id; 
+    private Integer id; 
+    private Integer userid; 
     private String description;
     private boolean isDone;
-    private String data;
+    private String targetedDate;
     private Integer like;
     private Integer dislike;
     private String createdDate;
+    private Integer userspecifictodoid;
+    private String updatedDate;
 
 
+    public String getUpdatedDate() {
+        return updatedDate;
+    }
+    public void setUpdatedDate(String updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+    public String getTargetedDate() {
+        return targetedDate;
+    }
+    public void setTargetedDate(String targetedDate) {
+        this.targetedDate = targetedDate;
+    }
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+    public Integer getUserspecifictodoid() {
+        return userspecifictodoid;
+    }
+    public void setUserspecifictodoid(Integer userspecifictodoid) {
+        this.userspecifictodoid = userspecifictodoid;
+    }
     public Todos() {
     }
-    public Todos(String id, String description, boolean isDone, String data, Integer like,
-            Integer dislike, String createdDate) {
+    public Todos(Integer id, String description, boolean isDone, String targetedDate, Integer like,
+            Integer dislike, String createdDate,Integer userid, Integer userspecifitodoid, String updatedDate) {
         this.id = id;
         this.description = description;
         this.isDone = isDone;
-        this.data = data;
+        this.targetedDate = targetedDate;
         this.like = like;
         this.dislike = dislike;
         this.createdDate = createdDate;
+        this.userid = userid;
+        this.userspecifictodoid = userspecifitodoid;
+        this.updatedDate = updatedDate;
     }
-    public String getId() {
+    public Integer getUserid(){
+        return userid;
+    }
+    public void setUserid(Integer userid){
+        this.userid = userid;
+    }
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getDescription() {
@@ -51,10 +84,10 @@ public class Todos
         this.isDone = isDone;
     }
     public String getData() {
-        return data;
+        return targetedDate;
     }
-    public void setData(String data) {
-        this.data = data;
+    public void setData(String tergetedDate) {
+        this.targetedDate = tergetedDate;
     }
     public Integer getLike() {
         return like;

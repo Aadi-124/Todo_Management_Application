@@ -56,12 +56,21 @@ import AddTodo from "./components/AddTodo";
 import Register from "./components/Register";
 import OTP from "./components/OTP";
 import ForgotPass from "./components/ForgotPass";
+import RegistrattionOTP from "./components/RegistrationOTP";
+import ForgotOTP from "./components/ForgotOTP";
+import ResetPassword from "./components/ResetPassword";
+import Admin from "./components/Admin";
+import User from "./components/User";
+import NotAuthorized from "./components/NotAuthorized";
+import ShowAllTodoTable from "./components/ShowAllTodoTable";
 
 function App(){
 
   const [isAuthenticated,setAuthenticate] = useState(false);
-  const [username,setUsername] = useState(null);
-  const [token,setToken] = useState(null);
+  const [username,setUsername] = useState('');
+  const [token,setToken] = useState('');
+  const [role,setRole] = useState('');
+  const [userid,setUserid] = useState('');
 
 
   function navigateTo(destination)  {
@@ -78,12 +87,29 @@ function App(){
     if(isAuthenticated){
       return children;
     } else {
-        navigateTo("/");
+        navigateTo("/notauthorized");
+    }
+  }
+
+  function AuthenticateRouteForUsers({children}){
+    if(isAuthenticated && role == "USER"){
+      return children;
+    } else {
+        navigateTo("/notauthorized");
+    }
+  }
+
+  function AuthenticateRouteForAdmins({children}){
+    console.log(role);
+    if(isAuthenticated && role == "ADMIN"){
+      return children;
+    } else {
+        navigateTo("/notauthorized");
     }
   }
 
   return <>
-    <AuthContext.Provider value={{isAuthenticated,setAuthenticate,username,setUsername,token,setToken}}>
+    <AuthContext.Provider value={{isAuthenticated,setAuthenticate,username,setUsername,token,setToken,role,setRole,userid,setUserid}}>
 
     <BrowserRouter>
       <NavigationBar/>
@@ -91,19 +117,33 @@ function App(){
         <Route path="/" element={<Home/>}/>
         
         
-        <Route path="/welcome/:username" element={<AuthenticateRoute> <Welcome/>  </AuthenticateRoute>}/>
+        <Route path="/welcome" element={<AuthenticateRoute> <Welcome/>  </AuthenticateRoute>}/>
       
         <Route path="/login" element={ <Login/> }/>
-        <Route path="/sample" element={<AuthenticateRoute> <Sample/>  </AuthenticateRoute>}/>
-        <Route path="/table" element={<AuthenticateRoute> <CustomizedTables/>  </AuthenticateRoute>}/>
-        <Route path="/logout" element={<AuthenticateRoute> <Logout/>  </AuthenticateRoute>}/>
-        <Route path="/updatetodo/:id" element={<AuthenticateRoute> <UpdateTodos/>  </AuthenticateRoute>}/>
+        <Route path="/sample" element={<Sample/>}/>
+        <Route path="/logout" element={ <Logout/>}/>
         <Route path="/pleaselogin" element={ <PleaseLogin/> }/>
-        <Route path="/addtodo" element={ <AuthenticateRoute> <AddTodo/> </AuthenticateRoute> }/>
-        <Route path="/otp/:role" element={  <OTP/> }/>
+        <Route path="/otp" element={  <OTP/> }/>
+        <Route path="/registration-otp" element={  <RegistrattionOTP/> }/>
+        <Route path="/reset-password" element={  <ResetPassword/> }/>
+        <Route path="/forgot-otp" element={  <ForgotOTP/> }/>
         <Route path="/register" element={ <Register/> }/>
         <Route path="/forgotpassword" element={ <ForgotPass/> }/>
+        <Route path="/notauthorized" element={ <NotAuthorized/> }/>
         <Route path="*" element={<NotFoundPage/>  }/>
+
+
+        <Route path="/table" element={ <CustomizedTables/>}/>
+        <Route path="/updatetodo" element={<AuthenticateRoute> <UpdateTodos/>  </AuthenticateRoute>}/>
+        <Route path="/addtodo" element={ <AuthenticateRoute> <AddTodo/> </AuthenticateRoute> }/>
+        <Route path="/showalltodo" element={ <AuthenticateRouteForAdmins> <ShowAllTodoTable/> </AuthenticateRouteForAdmins>}/>
+
+
+        
+        <Route path="/admin" element={<AuthenticateRoute> <Admin/>  </AuthenticateRoute>}/>
+        <Route path="/user" element={<AuthenticateRoute> <User/>  </AuthenticateRoute>}/>
+
+
       </Routes>
       <Footer/>
     </BrowserRouter>

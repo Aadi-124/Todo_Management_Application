@@ -89,8 +89,7 @@ export default function CustomizedTables() {
 
   useEffect(() => refresh(), [])
   function refresh() {
-    const credentials = {userid:Authentication.userid};
-    getUserTodo(credentials)
+    retrieveTodos()
       .then((response) => {
         console.log(response.data);
         setTodos(response.data) })
@@ -150,7 +149,8 @@ export default function CustomizedTables() {
     const data = {
       id:todoid,
       description:tododescription,
-      targetedDate:todotargeteddate
+      targetedDate:todotargeteddate,
+      showalltodo:true
     }
 
     navigate(`/updatetodo/`,{ state: data });
@@ -211,6 +211,8 @@ export default function CustomizedTables() {
             <TableHead>
               <TableRow>
                 <StyledTableCell align='center' style={{ fontSize: "30px", fontFamily: "monospace", width: '10%' }}  >ID</StyledTableCell>
+                <StyledTableCell align='center' style={{ fontSize: "30px", fontFamily: "monospace", width: '10%' }}  >User ID</StyledTableCell>
+                <StyledTableCell align='center' style={{ fontSize: "30px", fontFamily: "monospace", width: '10%' }}  >Todo No.</StyledTableCell>
                 <StyledTableCell align="center" style={{ fontSize: "30px" }} width={'20%'} >Description</StyledTableCell>
                 <StyledTableCell align="center" style={{ fontSize: "30px" }} width={'20%'} >isDone</StyledTableCell>
                 <StyledTableCell align="center" style={{ fontSize: "30px" }} width={'20%'} >Targated Date</StyledTableCell>
@@ -220,6 +222,8 @@ export default function CustomizedTables() {
             <TableBody>
               {todos.map((todo) => (
                 <StyledTableRow key={todo.id}>
+                  <StyledTableCell component="th" align='center' scope="row">{todo.id}</StyledTableCell>
+                  <StyledTableCell component="th" align='center' scope="row">{todo.userid}</StyledTableCell>
                   <StyledTableCell component="th" align='center' scope="row">{todo.userspecifictodoid}</StyledTableCell>
                   <StyledTableCell align="center">{todo.description}</StyledTableCell>
                   <StyledTableCell align="center">{todo.isDone && 'Done'}{!todo.isDone && 'Not Done'}</StyledTableCell>

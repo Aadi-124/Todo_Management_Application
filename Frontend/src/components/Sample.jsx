@@ -1,33 +1,33 @@
-// import * as React from 'react';
-// import IconButton from '@mui/material/IconButton';
-// import Input from '@mui/material/Input';
-// import InputLabel from '@mui/material/InputLabel';
-// import InputAdornment from '@mui/material/InputAdornment';
-// import FormControl from '@mui/material/FormControl';
-// import Visibility from '@mui/icons-material/Visibility';
-// import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { addUserTodo, forgotPasswordAPI } from "../API/APIService";
+import Auth from "../security/AuthContext";
+
+export default function Sample(){
+
+  const Authentication = Auth();
+
+  const run = () => {
+    console.log("Clicked!");
+    const todo = {
+      id:0,
+      userid:12,
+      description:"This is from frontend",
+      isDone:false,
+      data:"FrontEndData",
+      like:200,
+      dislike:400,
+      createdDate:"12/04/2004",
+      userspecifictodoid:0
+    }
+
+    addUserTodo(todo)
+    .then((response)=>{console.log(response)})
+    .catch((error)=>{console.log(error)});
+  }
 
 
-
-function Sample(){
-
-    // const [showPassword, setShowPassword] = React.useState(false);
-
-    // const handleClickShowPassword = () => setShowPassword((show) => !show);
-  
-    // const handleMouseDownPassword = (event) => {
-    //   event.preventDefault();
-    // };
-
-    return (
-        <>
-        
-
-
-        
-        </>
-    );
+  return(
+    <>
+      <button onClick={run}>clickme</button>
+    </>
+  );
 }
-
-
-export default Sample;

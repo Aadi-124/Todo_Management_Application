@@ -4,10 +4,21 @@
     flex-wrap:wrap;
     justify-content: space-around;
     align-items: center;
-    height: 65vh;
+    height: 40vh;
     margin: auto;
-    width: 50%;
+    width: 750px;
 }
+
+
+@media only screen and (max-width: 800px) {
+   .Regcontainer{
+    height:max-content;
+    width: 100%;
+   } 
+}
+
+
+
 /* 
 .Regcontainer>div{
     border:3px solid red;
@@ -16,7 +27,8 @@
 #Regheading{
     width: min-content; 
     margin: 0px auto;
-    margin-top: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 #Regsubmit{

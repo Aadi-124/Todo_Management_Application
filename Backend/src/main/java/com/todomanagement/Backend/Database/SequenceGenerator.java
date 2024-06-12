@@ -7,6 +7,7 @@ import com.todomanagement.Backend.Repository.DBSequenceRepository;
 @Service
 public class SequenceGenerator {
 
+    
     @Autowired
     DBSequenceRepository repository;
 
