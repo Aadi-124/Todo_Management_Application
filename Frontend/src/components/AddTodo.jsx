@@ -16,6 +16,7 @@ import './Todos.css';
 export default function AddTodo() {
 
     const Authentication = Auth();
+    const token = Authentication.token;
     const navigate = useNavigate();
     const { id } = useParams();
     const [description, setDesription] = useState('');
@@ -42,7 +43,7 @@ export default function AddTodo() {
             createdDate: Date.now(),
         }
 
-        addUserTodo(todo)
+        addUserTodo(token,todo)
             .then(() => {
                 Swal.fire({
                     title: 'Todo Added Successfully!',
@@ -56,8 +57,8 @@ export default function AddTodo() {
             })
             .catch(() => {
                 Swal.fire({
-                    title: 'Updated!',
-                    icon: 'success',
+                    title: 'Todo Not Added!',
+                    icon: 'error',
                     confirmButtonText: 'OK'
                 }).then((response) => {
                     if (response.isConfirmed) {

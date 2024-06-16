@@ -1,4 +1,4 @@
-package com.todomanagement.Service;
+package com.todomanagement.Backend.Service;
 
 import java.util.Properties;
 

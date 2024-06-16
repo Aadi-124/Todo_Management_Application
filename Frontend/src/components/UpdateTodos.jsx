@@ -15,10 +15,12 @@ import dayjs from "dayjs";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { useLocation } from "react-router-dom";
 import './Todos.css';
+import Auth from "../security/AuthContext";
 
 export default function UpdateTodos(){
 
-
+    const Authenticaion = Auth();
+    const token = Authenticaion.token;
     const location = useLocation();
     const data = location.state;
     // const [value, setV] = useState(dayjs(''));
@@ -75,7 +77,7 @@ export default function UpdateTodos(){
                 description:getValues("tododescription"),
                 targetedDate:getValues("targeteddate"),
                 isDone:false}
-                updateTodoAPI(todo)
+                updateTodoAPI(token,todo)
                 .then((response)=>{
                     Swal.fire({
                         title: 'Updated!',
@@ -133,7 +135,7 @@ export default function UpdateTodos(){
                 <div className="mainContainer">
             <div className="inpContainer">
 
-            <TextField id="outlined-basic" onChange={handleOnChange}  {...register("tododescription")} variant="outlined" label="Description"required/>
+            <TextField id="outlined-basic" onChange={handleOnChange}  style={{"width":"100%"}} {...register("tododescription")} variant="outlined" label="Description"required/>
                <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DateField']}>
                   <DateField id='date' style={{"width":"100%"}} className='txt_fields' format='DD/MM/YYYY' {...register("targeteddate")} label="Targeted Date" required/>  
@@ -141,8 +143,8 @@ export default function UpdateTodos(){
               </LocalizationProvider>
             </div>
             <div className="submitContainer">
-                <Button variant="contained" onClick={cancel} color="error">Cancel</Button>
-                <Button variant="contained" type="submit" color="success">Update</Button>
+                <Button variant="contained" style={{"width":"100%"}} onClick={cancel} color="error">Cancel</Button>
+                <Button variant="contained" style={{"width":"100%"}} type="submit" color="success">Update</Button>
             </div>
                 </div>
             </form>

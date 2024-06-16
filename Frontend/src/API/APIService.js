@@ -13,23 +13,23 @@ const apiClient = axios.create(
 
 
 
-export const retrieveTodos = () => apiClient.get("/public/getalltodos");
+export const retrieveTodos = (token) => apiClient.get("/admin/getalltodos",{headers: {'Authorization':token }});
 
 export const retrieveTodo = (id) => apiClient.get(`/todos/${id}`);
 
-export const deleteTodoAPI = (todo) => apiClient.post(`/public/deletetodo`,todo);
+export const deleteTodoAPI = (token,todo) => apiClient.post(`/users/deletetodo`,todo,{headers: {'Authorization':token }});
 
-export const updateTodoAPI = (todo) => apiClient.put(`/public/updatetodo`,todo);
+export const updateTodoAPI = (token,todo) => apiClient.put(`/users/updatetodo`,todo,{headers: {'Authorization':token }});
 
-export const addTodoAPI = (todo) => apiClient.post(`/addtodo`,todo);
+export const addTodoAPI = (token,todo) => apiClient.post(`/users/addtodo`,todo,{headers: {'Authorization':token }});
 
-export const setIsDoneAPI = (todo) => apiClient.put(`/public/setisdone`,todo);
+export const setIsDoneAPI = (token,todo) => apiClient.put(`/users/setisdone`,todo,{headers: {'Authorization':token }});
 
 export const BasicAuthentication = (token) => apiClient.get('/basicAuth',{ headers: { 'Authorization': 'Bearer ' + token } });
 
-export const addUserTodo = (todo) => apiClient.post('/public/addusertodo',todo);
+export const addUserTodo = (token,todo) => apiClient.post('/users/addusertodo',todo,{headers: {'Authorization':token }});
 
-export const getUserTodo = (credentials) => apiClient.post('/public/getusertodos',credentials);
+export const getUserTodo = (token,credentials) => apiClient.post('/users/getusertodos',credentials,{headers: {'Authorization':token }});
 
 export const registerUserAPI = (user) => apiClient.post('/public/register',user);
 
@@ -42,3 +42,7 @@ export const verifyOTP = (otp) => apiClient.get(`/public/verify-otp/${otp}`);
 export const forgotPasswordAPI = (email) => apiClient.post('/public/otp-forgot',email);
 
 export const resetPasswordAPI = (email,credentials) => apiClient.post('/public/reset-password',email,credentials);
+
+export const checkAuthority = (token) => apiClient.get('/users',{headers: {'Authorization':token }});
+
+

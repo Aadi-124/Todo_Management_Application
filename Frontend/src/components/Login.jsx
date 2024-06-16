@@ -112,10 +112,10 @@ function Login() {
                         console.log(Authentication.role == "ADMIN" && Authentication.isAuthenticated)
                         console.log(Authentication.role == "USER" && Authentication.isAuthenticated);
                         if(Authentication.role == "ADMIN" && Authentication.isAuthenticated){
-                            navigate("/admin");
+                            navigate(`/Sample`);
                             return;
                         } else if(Authentication.role == "USER" && Authentication.isAuthenticated){
-                            navigate("/user");
+                            navigate("/Sample");
                             return;
                         }
 

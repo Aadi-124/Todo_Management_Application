@@ -32,14 +32,16 @@ import MailIcon from '@mui/icons-material/Mail';
 
 export default function NavigationBar() {
 
-  const navigate = useNavigate();
-  const authentication = Auth();
-  const [usernavbtn,setUsernavbtn] = React.useState(false);
-  const [adminnavbtn,setAdminnavbtn] = React.useState(false);
-  const [navbtns,setNavbtns] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
-  const toggleDrawer = (newOpen) => () => {
+    const navigate = useNavigate();
+    const authentication = Auth();
+    const [authenticated,setAuthenticated] = React.useState();
+    const [usernavbtn,setUsernavbtn] = React.useState(false);
+    const [adminnavbtn,setAdminnavbtn] = React.useState(false);
+    const [navbtns,setNavbtns] = React.useState([]);
+    const [open, setOpen] = React.useState(false);
+    const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+
   };
 
   const logout = () =>{
@@ -66,28 +68,22 @@ export default function NavigationBar() {
 
   // },[]);
 
-  // useEffect(() => {
-  //   console.log("USE EFFECT!!");
-  //   setAuth();
-  //   if(adminnavbtn)
-  //     setNavbtns(['Home','Todos','Welcome','Add Todos','Show All Todos']);
-  //   if(usernavbtn)
-  //     setNavbtns(['Home','Todos','Welcome','Add Todos']);
-
-  //   console.log(usernavbtn);
-  //   console.log(adminnavbtn);
-  //   console.log(navbtns);
-
-  // },[]);
+  useEffect(() => {
+    setAuth();
+  });
 
   function setAuth() {
     if(authentication.isAuthenticated && authentication.role == "ADMIN"){
       setAdminnavbtn(true);
       setAdminnavbtn(true);
-    }
-    if(authentication.isAuthenticated && authentication.role == "USER"){
-      setUsernavbtn(true);
-      setUsernavbtn(true);
+      setAuthenticated(true);
+      setAuthenticated(true);
+      }
+      if(authentication.isAuthenticated && authentication.role == "USER"){
+        setUsernavbtn(true);
+        setUsernavbtn(true);
+        setAuthenticated(true);
+        setAuthenticated(true);
     }
   }
 
@@ -120,9 +116,24 @@ export default function NavigationBar() {
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
-        ))} */}.
+        ))} */}
 
-        <ListItem disablePadding>
+         
+           {authenticated && usernavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/")}>
+              <ListItemIcon>
+                HOME
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && usernavbtn && 
+
+          <ListItem disablePadding>
             <ListItemButton onClick={()=>navigate("/welcome")}>
               <ListItemIcon>
                 WELCOME
@@ -130,6 +141,94 @@ export default function NavigationBar() {
               <ListItemText/>
             </ListItemButton>
           </ListItem>
+
+        }
+          {authenticated && usernavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/table")}>
+              <ListItemIcon>
+                TODOS
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && usernavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/addtodo")}>
+              <ListItemIcon>
+                ADD TODOS
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && adminnavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/")}>
+              <ListItemIcon>
+                HOME
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && adminnavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/welcome")}>
+              <ListItemIcon>
+                WELCOME
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && adminnavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/addtodo")}>
+              <ListItemIcon>
+                ADD TODOS
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && adminnavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/table")}>
+              <ListItemIcon>
+                TODOS
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+          {authenticated && adminnavbtn && 
+
+          <ListItem disablePadding>
+            <ListItemButton onClick={()=>navigate("/showalltodo")}>
+              <ListItemIcon>
+                SHOW ALL TODOS
+              </ListItemIcon>
+              <ListItemText/>
+            </ListItemButton>
+          </ListItem>
+
+        }
+
+        
       </List>
       <Divider />
       <List>

@@ -128,7 +128,7 @@ div{
   display: flex;
   margin: 0px;
   flex-shrink: inherit;
-  width: 50vh;
+  width: min-content;
   height: 30vh;
   align-items: center;
 

@@ -10,14 +10,12 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sun.mail.iap.Response;
 import com.todomanagement.Backend.Database.SequenceGenerator;
 import com.todomanagement.Backend.Entities.AppUser;
 import com.todomanagement.Backend.Entities.Credentials;
@@ -27,8 +25,8 @@ import com.todomanagement.Backend.Entities.UserAuthorization;
 import com.todomanagement.Backend.Repository.DBSequenceRepository;
 import com.todomanagement.Backend.Repository.AppUserRepository;
 import com.todomanagement.Backend.Repository.TodosRepository;
-import com.todomanagement.Service.Base64EncodingService;
-import com.todomanagement.Service.EmailService;
+import com.todomanagement.Backend.Service.Base64EncodingService;
+import com.todomanagement.Backend.Service.EmailService;
 
 import jakarta.mail.MessagingException;
 
@@ -58,19 +56,19 @@ public class TodoController {
         return "ACCESSED!";
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        return "ADMIN ACCESS";
-    }
-
     @GetMapping("/users")
     public String user() {
         return "USER ACCESS";
     }
 
+    @GetMapping("/admin")
+    public String admin(){
+        return "ADMIN ACCESS Granteed!";
+    }
 
 
-    @PostMapping("/public/addusertodo")
+
+    @PostMapping("/users/addusertodo")
     public boolean addUserTodo(@RequestBody Todos todo){
         todo.setId(sequencegenerator.generateSequence(Todos.SEQUENCE_NAME));
         AppUser user = appUserRepository.findById(todo.getUserid()).get();
@@ -85,12 +83,12 @@ public class TodoController {
         return true;
     }
 
-    @PostMapping("/public/getusertodos")
+    @PostMapping("/users/getusertodos")
     public List<Todos> getUserTodos(@RequestBody Credentials credentials){
         return todoRepository.findByUserid(credentials.getUserid());
     }
     
-    @GetMapping("/public/getalltodos")
+    @GetMapping("/admin/getalltodos")
     public List<Todos> getAllTodos(){
         return todoRepository.findAll();
     }
@@ -200,13 +198,13 @@ public class TodoController {
         }
     }
 
-    @PostMapping("/public/deletetodo")
+    @PostMapping("/users/deletetodo")
     public Integer deleteTodos(@RequestBody Todos todo){
         todoRepository.deleteById(todo.getId());
         return todo.getId();
     }
 
-    @PutMapping("/public/updatetodo")
+    @PutMapping("/users/updatetodo")
     public Todos updateTodo(@RequestBody Todos todo) {
         Todos usertodo = todoRepository.findById(todo.getId()).get();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -219,16 +217,11 @@ public class TodoController {
         return todo;
     }
 
-    @PutMapping("/public/setisdone")
+    @PutMapping("/users/setisdone")
     public boolean setIsDone(@RequestBody Todos todo){
     Todos usertodo = todoRepository.findById(todo.getId()).get();
     usertodo.setIsDone(true);
     todoRepository.save(usertodo);
     return true;
     }
-
-    
-
-
-
 }

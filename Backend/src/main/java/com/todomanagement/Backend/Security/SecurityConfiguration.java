@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         http.csrf(csrf -> csrf.disable());
         http
         .authorizeHttpRequests(auth ->
-         auth.requestMatchers("/public/**").permitAll().requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/users/**").hasRole("USER"));
+         auth.requestMatchers("/public/**").permitAll().requestMatchers("/admin/**","/users/**").hasRole("ADMIN").requestMatchers("/users/**").hasRole("USER"));
          http.httpBasic(Customizer.withDefaults());
         return http.build();
     }                       

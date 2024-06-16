@@ -1,33 +1,36 @@
-import { addUserTodo, forgotPasswordAPI } from "../API/APIService";
+import { checkAuthority } from "../API/APIService";
+import { Button } from "@mui/material";
 import Auth from "../security/AuthContext";
+
+
 
 export default function Sample(){
 
   const Authentication = Auth();
+  const token = Authentication.token;
 
-  const run = () => {
-    console.log("Clicked!");
-    const todo = {
-      id:0,
-      userid:12,
-      description:"This is from frontend",
-      isDone:false,
-      data:"FrontEndData",
-      like:200,
-      dislike:400,
-      createdDate:"12/04/2004",
-      userspecifictodoid:0
-    }
-
-    addUserTodo(todo)
-    .then((response)=>{console.log(response)})
-    .catch((error)=>{console.log(error)});
+  const checkAccess = () =>{
+    checkAuthority(token).then((response)=>{
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
 
+  // const checkAccess = () =>{
+  //   checkAuthority(token)
+  //   .then((response)=>{
+  //     console.log(response);
+  //   })
+  //   .catch((error)=>{
+  //     console.log(error);
+  //   })
+  // }
 
   return(
-    <>
-      <button onClick={run}>clickme</button>
+    <>  
+          <Button color="primary" variant="contained" onClick={checkAccess}>Check Access!</Button>
     </>
   );
 }

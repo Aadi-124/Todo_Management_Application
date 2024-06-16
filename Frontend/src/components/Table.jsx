@@ -17,6 +17,14 @@ import './Btn.css';
 import { setIsDoneAPI } from '../API/APIService';
 import Swal from 'sweetalert2';
 import Auth from '../security/AuthContext';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import './Sample.css';
+import Box from '@mui/material/Box';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import OfflinePinIcon from '@mui/icons-material/OfflinePin';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,9 +55,10 @@ export default function CustomizedTables() {
 
   const navigate = useNavigate();
   const Authentication = Auth();
+  const token = Authentication.token;
 
   const setIsDone = (id) => {
-    setIsDoneAPI(id)
+    setIsDoneAPI(token,id)
       .then(() => {
         const Toast = Swal.mixin({
           toast: true,
@@ -90,7 +99,7 @@ export default function CustomizedTables() {
   useEffect(() => refresh(), [])
   function refresh() {
     const credentials = {userid:Authentication.userid};
-    getUserTodo(credentials)
+    getUserTodo(token,credentials)
       .then((response) => {
         console.log(response.data);
         setTodos(response.data) })
@@ -103,7 +112,7 @@ export default function CustomizedTables() {
       id:todoid,
       description:null
     }
-    deleteTodoAPI(todo).then((response)=>{
+    deleteTodoAPI(token,todo).then((response)=>{
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -160,7 +169,7 @@ export default function CustomizedTables() {
     const todo = {
       id:todoid
     }
-    setIsDoneAPI(todo).then((response)=>{
+    setIsDoneAPI(token,todo).then((response)=>{
       if(response.data){
         const Toast = Swal.mixin({
           toast: true,
@@ -202,7 +211,83 @@ export default function CustomizedTables() {
 
   return (
     <>
-      <Button onClick={refresh} variant='contained' color='secondary' style={{ fontWeight: 'bolder', margin: '30px' }}>Refresh Todos</Button>
+      <center>
+      <br /><br /><br />  
+        <h1 className='heading'>TODOs</h1>
+
+        <Box className="cardcontainer">
+
+
+
+              {todos.map((todo) => (
+
+
+                
+<CardContent  className='cards'  key={todo.id}>
+      <Typography color="text.secondary" gutterBottom>
+      {todo.targetedDate}
+      </Typography>
+      <Typography variant="h5" component="div">
+      {todo.userspecifictodoid}
+      </Typography>
+
+{
+  todo.isDone && 
+  <Typography style={{"color":"green","font-weight":"bolder","font-size":"20px"}}>
+    <div>
+    Done <OfflinePinIcon/>
+
+    </div>
+      {/* {todo.isDone && 'Done'}{!todo.isDone && 'Not Done'}{!todo.isDone && <UnpublishedIcon/>}{todo.isDone &&  <OfflinePinIcon/>} */}
+      </Typography>
+}
+
+{
+  !todo.isDone && 
+  <Typography style={{"color":"red","font-weight":"bolder","font-size":"20px"}}>
+    Done <UnpublishedIcon/>
+      {/* {todo.isDone && 'Done'}{!todo.isDone && 'Not Done'}{!todo.isDone && <UnpublishedIcon/>}{todo.isDone &&  <OfflinePinIcon/>} */}
+      </Typography>
+}
+
+
+      
+      <Typography variant="body2">
+      
+      <p style={{"font-size":"20px"}}>{todo.description}</p>
+      </Typography>
+      <Button variant='contained' color='error' onClick={() => deleteTodo(todo.id)} style={{ fontWeight: 'bolder', margin: '5px' }}>Delete</Button>
+      <Button variant='contained' color='warning' onClick={() => updateTodo(todo.id,todo.description,todo.targetedDate)} style={{ fontWeight: 'bolder', margin: '5px', backgroundColor: "rgb(220, 143, 0)" }}>Update</Button>
+      {!todo.isDone && <Button variant='contained' color='success' onClick={()=>{setDone(todo.id)}} style={{ fontWeight: 'bolder', margin: '5px' }}>Done</Button>}   
+    </CardContent>
+                // <StyledTableRow key={todo.id}>
+                //   <StyledTableCell component="th" align='center' scope="row">{todo.userspecifictodoid}</StyledTableCell>
+                //   <StyledTableCell align="center">{todo.description}</StyledTableCell>
+                //   <StyledTableCell align="center">{todo.isDone && 'Done'}{!todo.isDone && 'Not Done'}</StyledTableCell>
+                //   <StyledTableCell align="center">{todo.targetedDate}</StyledTableCell>
+                //   <StyledTableCell align="left">
+                //     <Button variant='contained' color='error' onClick={() => deleteTodo(todo.id)} style={{ fontWeight: 'bolder', margin: '5px' }}>Delete</Button>
+                //     <Button variant='contained' color='warning' onClick={() => updateTodo(todo.id,todo.description,todo.targetedDate)} style={{ fontWeight: 'bolder', margin: '5px', backgroundColor: "rgb(220, 143, 0)" }}>Update</Button>
+                //     {!todo.isDone && <Button variant='contained' color='success' onClick={()=>{setDone(todo.id)}} style={{ fontWeight: 'bolder', margin: '5px' }}>Done</Button>}
+                //   </StyledTableCell>
+                // </StyledTableRow>
+                ))}
+      </Box>
+      <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+      </center>
+
+
+
+
+
+
+
+      {/* <Button onClick={refresh} variant='contained' color='secondary' style={{ fontWeight: 'bolder', margin: '30px' }}>Refresh Todos</Button>
       <center>
         <h1>TODOs</h1>
 
@@ -242,7 +327,7 @@ export default function CustomizedTables() {
           <br />
           <br />
         </TableContainer>
-      </center>
+      </center> */}
     </>
   );
 }   
